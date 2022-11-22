@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 
-function Pokemones() {
+const PokemonesAxios =() =>{
 
     const [pokemon , setPokemon] = useState([]);
     const [clicks, setClicks] = useState(0);
@@ -8,12 +9,12 @@ function Pokemones() {
 
     useEffect(() => {
         if (clicks > 0) {
-            fetch(url)
-            .then(response => response.json())
-            .then(responseJson => {
-                let data = responseJson.results;
-                let newUrl = responseJson.next;
-                setPokemon(data)
+            axios.get(url)
+            .then(response => response.data)
+            .then(data => {
+                let nombre = data.results;
+                let newUrl = data.next;
+                setPokemon(nombre)
                 setUrl(newUrl)
             })
         }
@@ -26,7 +27,9 @@ function Pokemones() {
     return (
         <div>
             <div>
-                <h1>Obten los nombres de los pokemones</h1>
+                <h1 style={{color:'blue'}}>Pokemones</h1>
+                <br></br>
+                <p>Obten 20 nuevos pokemos haciendo click en el boton</p>
             </div>
             <div>
                 <button className='btn btn-success' onClick={updateClicks}>Fetch Pokemon</button>
@@ -42,5 +45,5 @@ function Pokemones() {
     )
 }
 
-export default Pokemones
+export default PokemonesAxios;
 // https://pokeapi.co/api/v2/pokemon
